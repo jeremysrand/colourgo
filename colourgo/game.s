@@ -9,6 +9,8 @@
 
     .export _game
 
+    .import _vblWait
+
     .include "apple2.inc"
 
 
@@ -218,27 +220,102 @@ LINE191 = LINE190 + 1024
 
 .CODE
 
-_game:
+.proc _game
 
 ; Set up hires screen
-
     jsr clearScreen
     lda TXTCLR
     lda MIXCLR
     lda HIRES
     lda LOWSCR
 
-    
-wait:
+
+    ldy #150
+    jsr drawLine
+    ldy #155
+    jsr drawLine
+
+    ldx #0
+@L1:
+    jsr _vblWait
+    ldy #151
+    jsr drawGrid
+    ldy #152
+    jsr drawGrid
+    ldy #153
+    jsr drawGrid
+    ldy #154
+    jsr drawGrid
+    inx
+    cpx #7
+    bne @L2
+    ldx #0
+
+@L2:
     lda KEYBOARD
-    bpl wait
+    bpl @L1
     lda STROBE
 
     lda TXTSET
 
     rts
 
-clearScreen:
+.endproc
+
+
+.proc drawLine
+    lda loAddrs,y
+    sta ZPADDR
+    lda page1HiAddrs,y
+    sta ZPADDR+1
+
+    ldy #0
+@L1:
+    lda #$55
+    sta (ZPADDR),y
+    iny
+    lda #$2a
+    sta (ZPADDR),y
+    iny
+    cpy #MAXXBYTE
+    bne @L1
+
+    rts
+.endproc
+
+
+.proc drawGrid
+    lda loAddrs,y
+    sta ZPADDR
+    lda page1HiAddrs,y
+    sta ZPADDR+1
+
+    lda violetEvenGrid,x
+    sta evenVal
+    lda violetOddGrid,x
+    sta oddVal
+
+    ldy #0
+@L1:
+    lda evenVal
+    sta (ZPADDR),y
+    iny
+    lda oddVal
+    sta (ZPADDR),y
+    iny
+    cpy #MAXXBYTE
+    bne @L1
+
+    rts
+
+; Locals
+evenVal: .BYTE $00
+oddVal:  .BYTE $00
+
+.endproc
+
+
+.proc clearScreen
     ldx #0
     ldy #0
 
@@ -260,6 +337,8 @@ clearScreen:
     bne @L1
 
     rts
+.endproc
+
 
 .DATA
 
@@ -340,3 +419,10 @@ page2HiAddrs:
 .HIBYTES LINE168+$2000, LINE169+$2000, LINE170+$2000, LINE171+$2000, LINE172+$2000, LINE173+$2000, LINE174+$2000, LINE175+$2000
 .HIBYTES LINE176+$2000, LINE177+$2000, LINE178+$2000, LINE179+$2000, LINE180+$2000, LINE181+$2000, LINE182+$2000, LINE183+$2000
 .HIBYTES LINE184+$2000, LINE185+$2000, LINE186+$2000, LINE187+$2000, LINE188+$2000, LINE189+$2000, LINE190+$2000, LINE191+$2000
+
+violetEvenGrid:
+    .BYTE $00, $00, $00, $40, $10, $04, $01
+
+violetOddGrid:
+    .BYTE $20, $08, $02, $00, $00, $00, $00
+

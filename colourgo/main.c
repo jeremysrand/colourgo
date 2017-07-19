@@ -9,10 +9,13 @@
 #include <stdio.h>
 
 #include "game.h"
+#include "machine.h"
 
 
 int main(void)
 {
+    initMachine();
     game();
+    uninitMachine();
     return 0;
 }

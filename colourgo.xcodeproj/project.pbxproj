@@ -19,6 +19,10 @@
 		9DFD77D31F1F9C2500639A48 /* V2Make.scpt */ = {isa = PBXFileReference; lastKnownFileType = file; name = V2Make.scpt; path = make/V2Make.scpt; sourceTree = "<group>"; };
 		9DFD77D91F1FA47900639A48 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		9DFD77DB1F1FA4A400639A48 /* game.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = game.h; sourceTree = "<group>"; };
+		9DFD77DC1F1FB69600639A48 /* vbl.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = vbl.s; sourceTree = "<group>"; };
+		9DFD77DD1F1FB69600639A48 /* vbl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vbl.h; sourceTree = "<group>"; };
+		9DFD77DE1F1FB69600639A48 /* machine.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = machine.c; sourceTree = "<group>"; };
+		9DFD77DF1F1FB69600639A48 /* machine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = machine.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -35,6 +39,10 @@
 				9DFD77C91F1F9C2500639A48 /* game.s */,
 				9DFD77DB1F1FA4A400639A48 /* game.h */,
 				9DFD77D91F1FA47900639A48 /* main.c */,
+				9DFD77DC1F1FB69600639A48 /* vbl.s */,
+				9DFD77DD1F1FB69600639A48 /* vbl.h */,
+				9DFD77DE1F1FB69600639A48 /* machine.c */,
+				9DFD77DF1F1FB69600639A48 /* machine.h */,
 				9DFD77CA1F1F9C2500639A48 /* Makefile */,
 				9DFD77CB1F1F9C2500639A48 /* make */,
 			);
