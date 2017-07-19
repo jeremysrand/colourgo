@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		9DFD77C91F1F9C2500639A48 /* main.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = main.s; sourceTree = "<group>"; };
+		9DFD77C91F1F9C2500639A48 /* game.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = game.s; sourceTree = "<group>"; };
 		9DFD77CA1F1F9C2500639A48 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		9DFD77CC1F1F9C2500639A48 /* AppleCommander.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; name = AppleCommander.jar; path = make/AppleCommander.jar; sourceTree = "<group>"; };
 		9DFD77CD1F1F9C2500639A48 /* createDiskImage */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = createDiskImage; path = make/createDiskImage; sourceTree = "<group>"; };
@@ -17,6 +17,8 @@
 		9DFD77D11F1F9C2500639A48 /* prodos_template.dsk */ = {isa = PBXFileReference; lastKnownFileType = file; name = prodos_template.dsk; path = make/prodos_template.dsk; sourceTree = "<group>"; };
 		9DFD77D21F1F9C2500639A48 /* tail.mk */ = {isa = PBXFileReference; lastKnownFileType = text; name = tail.mk; path = make/tail.mk; sourceTree = "<group>"; };
 		9DFD77D31F1F9C2500639A48 /* V2Make.scpt */ = {isa = PBXFileReference; lastKnownFileType = file; name = V2Make.scpt; path = make/V2Make.scpt; sourceTree = "<group>"; };
+		9DFD77D91F1FA47900639A48 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		9DFD77DB1F1FA4A400639A48 /* game.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = game.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -30,7 +32,9 @@
 		9DFD77C81F1F9C2500639A48 /* colourgo */ = {
 			isa = PBXGroup;
 			children = (
-				9DFD77C91F1F9C2500639A48 /* main.s */,
+				9DFD77C91F1F9C2500639A48 /* game.s */,
+				9DFD77DB1F1FA4A400639A48 /* game.h */,
+				9DFD77D91F1FA47900639A48 /* main.c */,
 				9DFD77CA1F1F9C2500639A48 /* Makefile */,
 				9DFD77CB1F1F9C2500639A48 /* make */,
 			);
