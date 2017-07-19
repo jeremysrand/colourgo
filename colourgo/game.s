@@ -7,7 +7,7 @@
 ;
 
 
-    .export _game
+    .export _game, _drawCharacter
 
     .import _vblWait
 
@@ -22,7 +22,17 @@ MAXY=191
 MAXXBYTE=40
 MAXX=280
 
-ZPADDR=$80
+ZPADDR0=<$80
+ZPADDR1=<$82
+ZPADDR2=<$84
+ZPADDR3=<$86
+
+COL_BLACK=0
+COL_VIOLET=1
+COL_GREEN=2
+COL_WHITE=3
+
+CHAR_HEIGHT=10
 
 LINE0 = $2000
 LINE1 = LINE0 + 1024
@@ -229,7 +239,14 @@ LINE191 = LINE190 + 1024
     lda HIRES
     lda LOWSCR
 
+    lda #COL_VIOLET
+    sta colour
+@L3:
+    ldx colour
+    ldy #140
+    jsr drawCharacter
 
+    ldx colour
     ldy #150
     jsr drawLine
     ldy #155
@@ -238,13 +255,8 @@ LINE191 = LINE190 + 1024
     ldx #0
 @L1:
     jsr _vblWait
-    ldy #151
-    jsr drawGrid
-    ldy #152
-    jsr drawGrid
-    ldy #153
-    jsr drawGrid
-    ldy #154
+    ldy #150
+    lda colour
     jsr drawGrid
     inx
     cpx #7
@@ -256,52 +268,92 @@ LINE191 = LINE190 + 1024
     bpl @L1
     lda STROBE
 
+    inc colour
+    lda colour
+    and #COL_WHITE
+    sta colour
+    jmp @L3
+
     lda TXTSET
 
     rts
 
+; Locals
+colour: .BYTE $00
+
 .endproc
 
 
-.proc drawLine
-    lda loAddrs,y
-    sta ZPADDR
-    lda page1HiAddrs,y
-    sta ZPADDR+1
+_drawCharacter:
+.proc drawCharacter
+    lda colourEvenLookup,x
+    sta evenVal
+    lda colourOddLookup,x
+    sta oddVal
 
-    ldy #0
+    lda #<characterBitmap
+    sta ZPADDR1
+    lda #>characterBitmap
+    sta ZPADDR1+1
+
+    tya
+    clc
+    adc #CHAR_HEIGHT
+    sta yBottom
+
+    ldx #0
 @L1:
-    lda #$55
-    sta (ZPADDR),y
+    lda loAddrs,y
+    sta ZPADDR0
+    lda page1HiAddrs,y
+    sta ZPADDR0+1
+    sty yPos
+
+    ldy #2
+    lda evenVal
+    and (ZPADDR1,x)
+    sta (ZPADDR0),y
+    inc ZPADDR1
+
+    ldy #3
+    lda oddVal
+    and (ZPADDR1,x)
+    sta (ZPADDR0),y
+    inc ZPADDR1
+
+    ldy yPos
     iny
-    lda #$2a
-    sta (ZPADDR),y
-    iny
-    cpy #MAXXBYTE
+    cpy yBottom
     bne @L1
 
     rts
+
+; Locals
+evenVal: .BYTE $00
+oddVal:  .BYTE $00
+yPos: .BYTE $00
+yBottom: .BYTE $00
+
 .endproc
 
-
-.proc drawGrid
-    lda loAddrs,y
-    sta ZPADDR
-    lda page1HiAddrs,y
-    sta ZPADDR+1
-
-    lda violetEvenGrid,x
+.proc drawLine
+    lda colourEvenLookup,x
     sta evenVal
-    lda violetOddGrid,x
+    lda colourOddLookup,x
     sta oddVal
+
+    lda loAddrs,y
+    sta ZPADDR0
+    lda page1HiAddrs,y
+    sta ZPADDR0+1
 
     ldy #0
 @L1:
     lda evenVal
-    sta (ZPADDR),y
+    sta (ZPADDR0),y
     iny
     lda oddVal
-    sta (ZPADDR),y
+    sta (ZPADDR0),y
     iny
     cpy #MAXXBYTE
     bne @L1
@@ -315,19 +367,81 @@ oddVal:  .BYTE $00
 .endproc
 
 
+.proc drawGrid
+    sta colour
+
+    iny
+    lda loAddrs,y
+    sta ZPADDR0
+    lda page1HiAddrs,y
+    sta ZPADDR0+1
+
+    iny
+    lda loAddrs,y
+    sta ZPADDR1
+    lda page1HiAddrs,y
+    sta ZPADDR1+1
+
+    iny
+    lda loAddrs,y
+    sta ZPADDR2
+    lda page1HiAddrs,y
+    sta ZPADDR2+1
+
+    iny
+    lda loAddrs,y
+    sta ZPADDR3
+    lda page1HiAddrs,y
+    sta ZPADDR3+1
+
+    ldy colour
+    lda colourEvenLookup,y
+    and evenGrid,x
+    sta evenVal
+    lda colourOddLookup,y
+    and oddGrid,x
+    sta oddVal
+
+    ldy #0
+@L1:
+    lda evenVal
+    sta (ZPADDR0),y
+    sta (ZPADDR1),y
+    sta (ZPADDR2),y
+    sta (ZPADDR3),y
+    iny
+    lda oddVal
+    sta (ZPADDR0),y
+    sta (ZPADDR1),y
+    sta (ZPADDR2),y
+    sta (ZPADDR3),y
+    iny
+    cpy #MAXXBYTE
+    bne @L1
+
+    rts
+
+; Locals
+colour:  .BYTE $00
+evenVal: .BYTE $00
+oddVal:  .BYTE $00
+
+.endproc
+
+
 .proc clearScreen
     ldx #0
     ldy #0
 
 @L1:
     lda loAddrs,x
-    sta ZPADDR
+    sta ZPADDR0
     lda page1HiAddrs,x
-    sta ZPADDR+1
+    sta ZPADDR0+1
 
     lda #$0
 @L2:
-    sta (ZPADDR),y
+    sta (ZPADDR0),y
     iny
     cpy #MAXXBYTE
     bne @L2
@@ -420,9 +534,28 @@ page2HiAddrs:
 .HIBYTES LINE176+$2000, LINE177+$2000, LINE178+$2000, LINE179+$2000, LINE180+$2000, LINE181+$2000, LINE182+$2000, LINE183+$2000
 .HIBYTES LINE184+$2000, LINE185+$2000, LINE186+$2000, LINE187+$2000, LINE188+$2000, LINE189+$2000, LINE190+$2000, LINE191+$2000
 
-violetEvenGrid:
-    .BYTE $00, $00, $00, $40, $10, $04, $01
+colourEvenLookup:
+    .BYTE $00, $55, $2a, $ff
 
-violetOddGrid:
-    .BYTE $20, $08, $02, $00, $00, $00, $00
+colourOddLookup:
+    .BYTE $00, $2a, $55, $ff
+
+evenGrid:
+    .BYTE $00, $00, $00, $40, $30, $0c, $03
+
+oddGrid:
+    .BYTE $60, $18, $06, $01, $00, $00, $00
+
+.align 32
+characterBitmap:
+.BYTE $70, $01
+.BYTE $70, $01
+.BYTE $30, $00
+.BYTE $7c, $01
+.BYTE $33, $06
+.BYTE $30, $00
+.BYTE $30, $00
+.BYTE $4f, $01
+.BYTE $40, $01
+.BYTE $40, $01
 
