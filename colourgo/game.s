@@ -14,10 +14,6 @@
     .include "apple2.inc"
 
 
-COUT = $fded
-KEYBOARD = $c000
-STROBE = $c010
-
 MAXY=191
 MAXXBYTE=40
 MAXX=280
@@ -28,6 +24,10 @@ ZPADDR2=<$84
 ZPADDR3=<$86
 ZPADDR4=<$88
 ZPADDR5=<$8a
+ZPADDR6=<$8c
+ZPADDR7=<$8e
+
+LEVELADDR=<$90
 
 COL_BLACK=0
 COL_VIOLET=1
@@ -37,6 +37,7 @@ COL_WHITE=3
 CHAR_HEIGHT=10
 NUM_CHAR_BITMAPS=3
 CHAR_MAX_JUMPS=2
+CHAR_XPOS=2
 
 CHAR_STATE_NONE=0
 CHAR_STATE_JUMPING=1
@@ -45,7 +46,10 @@ CHAR_STATE_FALLING=2
 JUMP_SPEED=$FF-4
 GRAVITY=64
 
-GRID_YPOS=150
+GRID_YPOS=140
+GRID_HEIGHT=5
+
+LEVEL_GRID_SIZE=5
 
 LINE0 = $2000
 LINE1 = LINE0 + 1024
@@ -429,7 +433,7 @@ lastButtonState: .BYTE $00
 
 
 .proc updateCharacterColour
-    lda KEYBOARD
+    lda KBD
     bpl @L1
     cmp #$9b    ; Compare to Escape
     beq @L2
@@ -438,7 +442,7 @@ lastButtonState: .BYTE $00
     cmp #$f1    ; Compare to 'q'
     beq @L2
 
-    lda STROBE
+    lda KBDSTRB
     lda characterColour
     cmp #COL_VIOLET
     beq @L3
@@ -451,7 +455,7 @@ lastButtonState: .BYTE $00
     jmp @L1
 
 @L2:
-    lda STROBE
+    lda KBDSTRB
     lda #$01
     sta shouldQuit
 
@@ -483,7 +487,7 @@ lastButtonState: .BYTE $00
     lda page1HiAddrs,x
     sta ZPADDR0+1
 
-    ldy #2
+    ldy #CHAR_XPOS
     lda #0
     sta (ZPADDR0),y
     iny
@@ -503,7 +507,7 @@ lastButtonState: .BYTE $00
     sta ZPADDR0+1
     sty yPos
 
-    ldy #2
+    ldy #CHAR_XPOS
     lda evenVal
     and (ZPADDR1,x)
     sta (ZPADDR0),y
@@ -512,7 +516,7 @@ lastButtonState: .BYTE $00
     inc ZPADDR1+1
 
 @L2:
-    ldy #3
+    iny
     lda oddVal
     and (ZPADDR1,x)
     sta (ZPADDR0),y
@@ -537,13 +541,13 @@ yPos: .BYTE $00
 
 
 .proc updateGrid
-    ldx gridXPos
+    ldx gridXShift
     inx
     cpx #7
     bne @L1
     ldx #0
 @L1:
-    stx gridXPos
+    stx gridXShift
     rts
 .endproc
 
@@ -585,7 +589,7 @@ yPos: .BYTE $00
     lda page1HiAddrs,y
     sta ZPADDR5+1
 
-    ldx gridXPos
+    ldx gridXShift
     ldy gridColour
     lda colourEvenLookup,y
     sta evenVal
@@ -808,7 +812,31 @@ characterYSpeedFrac: .BYTE $00
 
 gridColour: .BYTE COL_VIOLET
 gridY:      .BYTE GRID_YPOS
+gridXShift: .BYTE $00
 gridXPos:   .BYTE $00
 
 shouldQuit: .BYTE $00
+
+level:      .BYTE $00
+
+; A level consists of the following for each grid:
+;     Byte 1 - Offset of the start of this grid from the previous grid's start
+;     Byte 2 - Grid width
+;     Byte 3 - Grid top
+;     Byte 4 - Grid bottom
+;     Byte 5 - Grid colour
+; The end of a level has a grid width of 0
+level1:
+.BYTE $00, 100, 140, 140+GRID_HEIGHT, COL_VIOLET
+.BYTE $00, $00, $00, $00, $00
+
+level2:
+.BYTE $00, 100, 140, 140+GRID_HEIGHT, COL_VIOLET
+.BYTE $00, $00, $00, $00, $00
+
+levelsLo:
+.LOBYTES level1, level2, 0
+
+levelsHi:
+.HIBYTES level1, level2, 0
 
