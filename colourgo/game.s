@@ -36,8 +36,13 @@ COL_WHITE=3
 
 CHAR_HEIGHT=10
 NUM_CHAR_POS=3
+CHAR_MAX_JUMPS=2
 
-JUMP_SPEED=5
+CHAR_STATE_NONE=0
+CHAR_STATE_JUMPING=1
+CHAR_STATE_FALLING=2
+
+JUMP_SPEED=$FF-5
 GRAVITY=1
 
 GRID_YPOS=150
@@ -271,6 +276,66 @@ LINE191 = LINE190 + 1024
 
 
 .proc updateCharacter
+    lda characterY
+    sta characterOldY
+    lda characterYBottom
+    sta characterOldYBottom
+
+    lda characterState
+    cmp #CHAR_STATE_JUMPING
+    beq @L2
+    lda BUTN1
+    bpl @L3
+    ldx characterNumJumps
+    cpx #CHAR_MAX_JUMPS
+    beq @L3
+    inx
+    stx characterNumJumps
+    lda #CHAR_STATE_JUMPING
+    sta characterState
+    lda #JUMP_SPEED
+    sta characterYSpeed
+    jmp @L3
+
+@L2:  ; Character is jumping
+    lda BUTN1
+    bmi @L3
+    lda #CHAR_STATE_FALLING
+    sta characterState
+    lda #0
+    sta characterYSpeed
+
+@L3:  ; Done changing character jumping state
+    lda characterState
+    cmp #CHAR_STATE_NONE
+    beq @L4
+    lda characterYBottom
+    clc
+    adc characterYSpeed
+    cmp gridY
+    bmi @L5
+    lda gridY
+    sta characterYBottom
+    lda #0
+    sta characterYSpeed
+    lda #CHAR_STATE_NONE
+    sta characterState
+    jmp @L6
+@L5:  ; Did not hit the grid, update speed from gravity
+    sta characterYBottom
+    lda characterYSpeed
+    clc
+    adc #GRAVITY
+    bmi @L6
+    lda #CHAR_STATE_FALLING
+    sta characterState
+@L6:  ; Need to calculate characterY now from characterYBottom
+    lda characterYBottom
+    sec
+    sbc #10
+    sta characterY
+
+@L4:  ; Done changing character position
     ldx characterPos
     inx
     cpx #NUM_CHAR_POS
@@ -296,6 +361,27 @@ LINE191 = LINE190 + 1024
     lda characterPosHi,x
     sta ZPADDR1+1
 
+    ldx characterOldY
+    cpx characterY
+    beq @L4
+
+@L5:
+    lda loAddrs,x
+    sta ZPADDR0
+    lda page1HiAddrs,x
+    sta ZPADDR0+1
+
+    ldy #2
+    lda #0
+    sta (ZPADDR0),y
+    iny
+    sta (ZPADDR0),y
+
+    inx
+    cpx characterOldYBottom
+    bne @L5
+
+@L4:
     ldy characterY
     ldx #0
 @L1:
@@ -310,13 +396,19 @@ LINE191 = LINE190 + 1024
     and (ZPADDR1,x)
     sta (ZPADDR0),y
     inc ZPADDR1
+    bne @L2
+    inc ZPADDR1+1
 
+@L2:
     ldy #3
     lda oddVal
     and (ZPADDR1,x)
     sta (ZPADDR0),y
     inc ZPADDR1
+    bne @L3
+    inc ZPADDR1+1
 
+@L3:
     ldy yPos
     iny
     cpy characterYBottom
@@ -549,8 +641,6 @@ evenGrid:
 oddGrid:
     .BYTE $60, $18, $06, $01, $00, $00, $00
 
-.align 32
-characterBitmap:
 character1Bitmap:
 .BYTE $70, $01
 .BYTE $70, $01
@@ -563,7 +653,6 @@ character1Bitmap:
 .BYTE $40, $01
 .BYTE $40, $01
 
-.align 32
 character2Bitmap:
 .BYTE $70, $01
 .BYTE $70, $01
@@ -576,7 +665,6 @@ character2Bitmap:
 .BYTE $43, $07
 .BYTE $03, $00
 
-.align 32
 character3Bitmap:
 .BYTE $70, $01
 .BYTE $70, $01
@@ -595,13 +683,15 @@ characterPosLo:
 characterPosHi:
 .HIBYTES character1Bitmap, character2Bitmap, character3Bitmap
 
-characterColour:  .BYTE COL_VIOLET
-characterPos:     .BYTE $00
-characterY:       .BYTE GRID_YPOS-CHAR_HEIGHT
-characterYBottom: .BYTE GRID_YPOS
-characterJumping: .BYTE $00
-characterYSpeed:  .BYTE $00
-characterFalling: .BYTE $00
+characterColour:     .BYTE COL_VIOLET
+characterPos:        .BYTE $00
+characterY:          .BYTE GRID_YPOS-CHAR_HEIGHT
+characterYBottom:    .BYTE GRID_YPOS
+characterOldY:       .BYTE GRID_YPOS-CHAR_HEIGHT
+characterOldYBottom: .BYTE GRID_YPOS
+characterState:      .BYTE CHAR_STATE_NONE
+characterNumJumps:   .BYTE $00
+characterYSpeed:     .BYTE $00
 
 gridColour: .BYTE COL_VIOLET
 gridY:      .BYTE GRID_YPOS
