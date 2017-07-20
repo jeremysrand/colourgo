@@ -35,7 +35,7 @@ COL_GREEN=2
 COL_WHITE=3
 
 CHAR_HEIGHT=10
-NUM_CHAR_POS=3
+NUM_CHAR_BITMAPS=3
 CHAR_MAX_JUMPS=2
 
 CHAR_STATE_NONE=0
@@ -257,16 +257,8 @@ LINE191 = LINE190 + 1024
     jsr updateCharacter
     jsr updateGrid
 
-    lda KEYBOARD
-    bpl @L1
-    lda STROBE
-
-    inc gridColour
-    lda gridColour
-    and #COL_WHITE
-    sta gridColour
-    sta characterColour
-    jmp @L1
+    lda shouldQuit
+    beq @L1
 
     lda TXTSET
 
@@ -276,30 +268,40 @@ LINE191 = LINE190 + 1024
 
 
 .proc updateCharacter
-    lda characterY
-    sta characterOldY
-    lda characterYBottom
-    sta characterOldYBottom
+
+; Save the old character position so it can be erased
+
+    jsr updateCharacterState
+    jsr updateCharacterPos
+    jsr updateCharacterBitmap
+    jsr updateCharacterColour
+
+    rts
+
+.endproc
+
+
+.proc updateCharacterState
 
     lda BUTN1
-    bpl @L7
+    bpl @L1
     lda #$01
-    jmp @L8
-@L7:
+    jmp @L2
+@L1:
     lda #$00
-@L8:
+@L2:
     cmp lastButtonState
-    beq @L3
+    beq @L4                 ; No change in button state so exit
     sta lastButtonState
 
     lda characterState
     cmp #CHAR_STATE_JUMPING
-    beq @L2
+    beq @L3                 ; Character is jumping, go to L3
     lda lastButtonState
-    beq @L3
+    beq @L4                 ; If button is not down, exit
     ldx characterNumJumps
     cpx #CHAR_MAX_JUMPS
-    beq @L3
+    beq @L4                 ; If we have reached max jumps, exit
     inx
     stx characterNumJumps
     lda #CHAR_STATE_JUMPING
@@ -308,38 +310,91 @@ LINE191 = LINE190 + 1024
     sta characterYSpeed
     lda #0
     sta characterYSpeedFrac
-    jmp @L3
+    jmp @L4
 
-@L2:  ; Character is jumping
+@L3:  ; Character is jumping
     lda lastButtonState
-    bne @L3
+    bne @L4                 ; If the button is still pressed, exit
     lda #CHAR_STATE_FALLING
     sta characterState
     lda #0
     sta characterYSpeed
     sta characterYSpeedFrac
 
-@L3:  ; Done changing character jumping state
+@L4:
+    rts
+
+; Local
+lastButtonState: .BYTE $00
+
+.endproc
+
+
+.proc updateCharacterPos
+
+    lda characterY
+    sta characterOldY
+    lda characterYBottom
+    sta characterOldYBottom
+
     lda characterState
     cmp #CHAR_STATE_NONE
+    bne @L1                 ; Nothing to do if not jumping or falling
+    rts
+@L1:
+    cmp #CHAR_STATE_JUMPING
     beq @L4
+
+; For falling, we need to calculate the bottom first and check
+; for collisions
     lda characterYBottom
     clc
     adc characterYSpeed
     cmp gridY
-    bmi @L5
+    bmi @L2
     lda gridY
     sta characterYBottom
     lda #0
     sta characterYSpeed
     sta characterYSpeedFrac
+    sta characterNumJumps
     lda #CHAR_STATE_NONE
     sta characterState
+    jmp @L3
+@L2:  ; Did not hit the grid, update speed from gravity
+    sta characterYBottom
+    lda characterYSpeedFrac
+    clc
+    adc #GRAVITY
+    sta characterYSpeedFrac
+    bcc @L3
+    inc characterYSpeed
+@L3:  ; Need to calculate characterY now from characterYBottom
+    lda characterYBottom
+    sec
+    sbc #CHAR_HEIGHT
+    sta characterY
+    rts
+
+@L4:
+; For jumping, we need to calculate the top first and check
+; for collisions
+    lda characterY
+    clc
+    adc characterYSpeed
+    cmp gridY               ; TODO - fix this compare
+    bmi @L5
+    lda gridY
+    sta characterY
     lda #0
+    sta characterYSpeed
+    sta characterYSpeedFrac
     sta characterNumJumps
+    lda #CHAR_STATE_FALLING
+    sta characterState
     jmp @L6
 @L5:  ; Did not hit the grid, update speed from gravity
-    sta characterYBottom
+    sta characterY
     lda characterYSpeedFrac
     clc
     adc #GRAVITY
@@ -349,26 +404,59 @@ LINE191 = LINE190 + 1024
     bmi @L6
     lda #CHAR_STATE_FALLING
     sta characterState
-@L6:  ; Need to calculate characterY now from characterYBottom
-    lda characterYBottom
-    sec
-    sbc #10
-    sta characterY
+@L6:  ; Need to calculate characterYBottom now from characterY
+    lda characterY
+    clc
+    adc #CHAR_HEIGHT
+    sta characterYBottom
+    rts
 
-@L4:  ; Done changing character position
-    ldx characterPos
+.endproc
+
+
+.proc updateCharacterBitmap
+
+    ldx characterBitmap
     inx
-    cpx #NUM_CHAR_POS
+    cpx #NUM_CHAR_BITMAPS
     bne @L1
     ldx #0
 @L1:
-    stx characterPos
-
+    stx characterBitmap
     rts
 
-; Local
-lastButtonState: .BYTE $00
+.endproc
 
+
+.proc updateCharacterColour
+    lda KEYBOARD
+    bpl @L1
+    cmp #$9b    ; Compare to Escape
+    beq @L2
+    cmp #$d1    ; Compare to 'Q'
+    beq @L2
+    cmp #$f1    ; Compare to 'q'
+    beq @L2
+
+    lda STROBE
+    lda characterColour
+    cmp #COL_VIOLET
+    beq @L3
+    lda #COL_VIOLET
+    jmp @L4
+@L3:
+    lda #COL_GREEN
+@L4:
+    sta characterColour
+    jmp @L1
+
+@L2:
+    lda STROBE
+    lda #$01
+    sta shouldQuit
+
+@L1:    ; No key pressed
+    rts
 .endproc
 
 
@@ -379,10 +467,10 @@ lastButtonState: .BYTE $00
     lda colourOddLookup,x
     sta oddVal
 
-    ldx characterPos
-    lda characterPosLo,x
+    ldx characterBitmap
+    lda characterBitmapLo,x
     sta ZPADDR1
-    lda characterPosHi,x
+    lda characterBitmapHi,x
     sta ZPADDR1+1
 
     ldx characterOldY
@@ -665,7 +753,7 @@ evenGrid:
 oddGrid:
     .BYTE $60, $18, $06, $01, $00, $00, $00
 
-character1Bitmap:
+characterBitmap1:
 .BYTE $70, $01
 .BYTE $70, $01
 .BYTE $30, $00
@@ -677,7 +765,7 @@ character1Bitmap:
 .BYTE $40, $01
 .BYTE $40, $01
 
-character2Bitmap:
+characterBitmap2:
 .BYTE $70, $01
 .BYTE $70, $01
 .BYTE $30, $00
@@ -689,7 +777,7 @@ character2Bitmap:
 .BYTE $43, $07
 .BYTE $03, $00
 
-character3Bitmap:
+characterBitmap3:
 .BYTE $70, $01
 .BYTE $70, $01
 .BYTE $30, $00
@@ -701,14 +789,14 @@ character3Bitmap:
 .BYTE $3f, $00
 .BYTE $0c, $00
 
-characterPosLo:
-.LOBYTES character1Bitmap, character2Bitmap, character3Bitmap
+characterBitmapLo:
+.LOBYTES characterBitmap1, characterBitmap2, characterBitmap3
 
-characterPosHi:
-.HIBYTES character1Bitmap, character2Bitmap, character3Bitmap
+characterBitmapHi:
+.HIBYTES characterBitmap1, characterBitmap2, characterBitmap3
 
 characterColour:     .BYTE COL_VIOLET
-characterPos:        .BYTE $00
+characterBitmap:     .BYTE $00
 characterY:          .BYTE GRID_YPOS-CHAR_HEIGHT
 characterYBottom:    .BYTE GRID_YPOS
 characterOldY:       .BYTE GRID_YPOS-CHAR_HEIGHT
@@ -721,4 +809,6 @@ characterYSpeedFrac: .BYTE $00
 gridColour: .BYTE COL_VIOLET
 gridY:      .BYTE GRID_YPOS
 gridXPos:   .BYTE $00
+
+shouldQuit: .BYTE $00
 
