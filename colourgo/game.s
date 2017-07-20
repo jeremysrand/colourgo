@@ -312,7 +312,7 @@ LINE191 = LINE190 + 1024
 
 @L2:  ; Character is jumping
     lda lastButtonState
-    beq @L3
+    bne @L3
     lda #CHAR_STATE_FALLING
     sta characterState
     lda #0
