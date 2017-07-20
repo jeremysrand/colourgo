@@ -42,8 +42,8 @@ CHAR_STATE_NONE=0
 CHAR_STATE_JUMPING=1
 CHAR_STATE_FALLING=2
 
-JUMP_SPEED=$FF-5
-GRAVITY=1
+JUMP_SPEED=$FF-4
+GRAVITY=64
 
 GRID_YPOS=150
 
@@ -281,11 +281,22 @@ LINE191 = LINE190 + 1024
     lda characterYBottom
     sta characterOldYBottom
 
+    lda BUTN1
+    bpl @L7
+    lda #$01
+    jmp @L8
+@L7:
+    lda #$00
+@L8:
+    cmp lastButtonState
+    beq @L3
+    sta lastButtonState
+
     lda characterState
     cmp #CHAR_STATE_JUMPING
     beq @L2
-    lda BUTN1
-    bpl @L3
+    lda lastButtonState
+    beq @L3
     ldx characterNumJumps
     cpx #CHAR_MAX_JUMPS
     beq @L3
@@ -295,15 +306,18 @@ LINE191 = LINE190 + 1024
     sta characterState
     lda #JUMP_SPEED
     sta characterYSpeed
+    lda #0
+    sta characterYSpeedFrac
     jmp @L3
 
 @L2:  ; Character is jumping
-    lda BUTN1
-    bmi @L3
+    lda lastButtonState
+    beq @L3
     lda #CHAR_STATE_FALLING
     sta characterState
     lda #0
     sta characterYSpeed
+    sta characterYSpeedFrac
 
 @L3:  ; Done changing character jumping state
     lda characterState
@@ -318,14 +332,20 @@ LINE191 = LINE190 + 1024
     sta characterYBottom
     lda #0
     sta characterYSpeed
+    sta characterYSpeedFrac
     lda #CHAR_STATE_NONE
     sta characterState
+    lda #0
+    sta characterNumJumps
     jmp @L6
 @L5:  ; Did not hit the grid, update speed from gravity
     sta characterYBottom
-    lda characterYSpeed
+    lda characterYSpeedFrac
     clc
     adc #GRAVITY
+    sta characterYSpeedFrac
+    bcc @L6
+    inc characterYSpeed
     bmi @L6
     lda #CHAR_STATE_FALLING
     sta characterState
@@ -345,6 +365,10 @@ LINE191 = LINE190 + 1024
     stx characterPos
 
     rts
+
+; Local
+lastButtonState: .BYTE $00
+
 .endproc
 
 
@@ -692,6 +716,7 @@ characterOldYBottom: .BYTE GRID_YPOS
 characterState:      .BYTE CHAR_STATE_NONE
 characterNumJumps:   .BYTE $00
 characterYSpeed:     .BYTE $00
+characterYSpeedFrac: .BYTE $00
 
 gridColour: .BYTE COL_VIOLET
 gridY:      .BYTE GRID_YPOS
