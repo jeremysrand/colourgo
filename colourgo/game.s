@@ -499,8 +499,20 @@ lastButtonState: .BYTE $00
     sbc gridXPos
     bpl @leftIsOnScreen
     lda #$0
-@leftIsOnScreen:
+    tax
+    jmp @skipLeftAdjust
 
+@leftIsOnScreen:
+    tax
+    lda gridXShift
+    beq @skipLeftAdjust
+    cmp #4
+    bcs @skipLeftAdjust
+    dex
+    dex
+
+@skipLeftAdjust:
+    txa
     cmp #CHAR_XPOS+1
     bcs @noneFound
 
@@ -1486,9 +1498,26 @@ level4:
 .BYTE 60, 40, 120, 120+GRID_HEIGHT, COL_VIOLET
 .BYTE 40, $00, $00, $00, $00
 
+level5:
+.BYTE 0, 80, 140, 140+GRID_HEIGHT, COL_VIOLET
+.BYTE 60, 80, 120, 120+GRID_HEIGHT, COL_VIOLET
+.BYTE 10, 70, 160, 160+GRID_HEIGHT, COL_GREEN
+.BYTE 50, 80, 140, 140+GRID_HEIGHT, COL_VIOLET
+.BYTE 60, 40, 120, 120+GRID_HEIGHT, COL_VIOLET
+.BYTE 40, $00, $00, $00, $00
+
+level6:
+.BYTE 0, 80, 140, 140+GRID_HEIGHT, COL_VIOLET
+.BYTE 100, 20, 120, 120+GRID_HEIGHT, COL_GREEN
+.BYTE 40, 20, 100, 100+GRID_HEIGHT, COL_VIOLET
+.BYTE 34, 20, 80, 80+GRID_HEIGHT, COL_GREEN
+.BYTE 34, 20, 60, 60+GRID_HEIGHT, COL_VIOLET
+.BYTE 30, 20, 40, 40+GRID_HEIGHT, COL_GREEN
+.BYTE 40, $00, $00, $00, $00
+
 levelsLo:
-.LOBYTES level1, level2, level3, level4, 0
+.LOBYTES level1, level2, level3, level4, level5, level6, 0
 
 levelsHi:
-.HIBYTES level1, level2, level3, level4, 0
+.HIBYTES level1, level2, level3, level4, level5, level6, 0
 
