@@ -18,6 +18,8 @@ MAXY=191
 MAXXBYTE=40
 MAXX=280
 
+SPEAKER=$C030
+
 ZPADDR0=<$80
 ZPADDR1=<$82
 ZPADDR2=<$84
@@ -317,10 +319,28 @@ LINE191 = LINE190 + 1024
 .endproc
 
 
-.proc gameOver
+.proc playSound
+; A is the frequency
+; X is the duration
 
-    jsr drawCharacter
+    sta freq
+@loop:
+    sta SPEAKER
+    ldy freq
+@innerloop:
+    dey
+    bne @innerloop
+    dex
+    bne @loop
+    rts
 
+; Locals
+freq: .BYTE $00
+
+.endproc
+
+
+.proc promptForReset
 @loop:
     lda KBD
     bpl @loop
@@ -342,14 +362,77 @@ LINE191 = LINE190 + 1024
 .endproc
 
 
+.proc gameOver
+    jsr drawCharacter
+
+    lda #0
+    ldx #36
+    jsr playSound
+
+    lda #250
+    ldx #34
+    jsr playSound
+
+    lda #230
+    ldx #32
+    jsr playSound
+
+    lda #220
+    ldx #30
+    jsr playSound
+
+    lda #230
+    ldx #32
+    jsr playSound
+
+    lda #250
+    ldx #34
+    jsr playSound
+
+    lda #0
+    ldx #36
+    jsr playSound
+    jmp promptForReset
+.endproc
+
+
 .proc levelWon
     lda #COL_WHITE
     sta characterColour
+
+    jsr drawCharacter
+
+    lda #80
+    ldx #36
+    jsr playSound
+
+    lda #120
+    ldx #34
+    jsr playSound
+
+    lda #160
+    ldx #32
+    jsr playSound
+
+    lda #200
+    ldx #30
+    jsr playSound
+
+    lda #160
+    ldx #32
+    jsr playSound
+
+    lda #120
+    ldx #34
+    jsr playSound
+
+    lda #80
+    ldx #36
+    jsr playSound
+
     inc level
 
-; This is weird but at this point, all of the logic we
-; need to progress to the next level is in gameOver...
-    jmp gameOver
+    jmp promptForReset
 .endproc
 
 
