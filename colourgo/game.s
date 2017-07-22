@@ -1544,7 +1544,7 @@ gridScreenRight: .BYTE $00
 
 shouldQuit: .BYTE $00
 
-level:      .BYTE $0
+level:      .BYTE $2
 
 ; A level consists of the following for each grid:
 ;     Byte 0 - Offset of the start of this grid from the previous grid's start
@@ -1568,20 +1568,29 @@ level2:
 .BYTE 40, $00, $00, $00, $00
 
 level3:
+.BYTE 0, 80, 140, 140+GRID_HEIGHT, COL_VIOLET
+.BYTE 80, 10, 140, 140+GRID_HEIGHT, COL_WHITE
+.BYTE 10, 80, 140, 140+GRID_HEIGHT, COL_GREEN
+.BYTE 80, 10, 140, 140+GRID_HEIGHT, COL_WHITE
+.BYTE 10, 80, 140, 140+GRID_HEIGHT, COL_VIOLET
+.BYTE 90, 40, 140, 140+GRID_HEIGHT, COL_GREEN
+.BYTE 40, $00, $00, $00, $00
+
+level4:
 .BYTE 0, 80, 80, 80+GRID_HEIGHT, COL_VIOLET
 .BYTE 60, 80, 100, 100+GRID_HEIGHT, COL_GREEN
 .BYTE 60, 80, 120, 120+GRID_HEIGHT, COL_VIOLET
 .BYTE 60, 40, 140, 140+GRID_HEIGHT, COL_GREEN
 .BYTE 40, $00, $00, $00, $00
 
-level4:
+level5:
 .BYTE 0, 80, 140, 140+GRID_HEIGHT, COL_VIOLET
 .BYTE 60, 80, 120, 120+GRID_HEIGHT, COL_VIOLET
 .BYTE 60, 80, 140, 140+GRID_HEIGHT, COL_VIOLET
 .BYTE 60, 40, 120, 120+GRID_HEIGHT, COL_VIOLET
 .BYTE 40, $00, $00, $00, $00
 
-level5:
+level6:
 .BYTE 0, 80, 140, 140+GRID_HEIGHT, COL_VIOLET
 .BYTE 60, 80, 120, 120+GRID_HEIGHT, COL_VIOLET
 .BYTE 10, 70, 160, 160+GRID_HEIGHT, COL_GREEN
@@ -1589,7 +1598,7 @@ level5:
 .BYTE 60, 40, 120, 120+GRID_HEIGHT, COL_VIOLET
 .BYTE 40, $00, $00, $00, $00
 
-level6:
+level7:
 .BYTE 0, 80, 140, 140+GRID_HEIGHT, COL_VIOLET
 .BYTE 100, 20, 120, 120+GRID_HEIGHT, COL_GREEN
 .BYTE 40, 20, 100, 100+GRID_HEIGHT, COL_VIOLET
@@ -1599,8 +1608,8 @@ level6:
 .BYTE 40, $00, $00, $00, $00
 
 levelsLo:
-.LOBYTES level1, level2, level3, level4, level5, level6, 0
+.LOBYTES level1, level2, level3, level4, level5, level6, level7, 0
 
 levelsHi:
-.HIBYTES level1, level2, level3, level4, level5, level6, 0
+.HIBYTES level1, level2, level3, level4, level5, level6, level7, 0
 
