@@ -1544,7 +1544,7 @@ gridScreenRight: .BYTE $00
 
 shouldQuit: .BYTE $00
 
-level:      .BYTE $2
+level:      .BYTE $0
 
 ; A level consists of the following for each grid:
 ;     Byte 0 - Offset of the start of this grid from the previous grid's start
