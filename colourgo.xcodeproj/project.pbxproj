@@ -10,6 +10,7 @@
 		9DF837AE1F22FB4300FFFEF2 /* a2e.stdmou.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = a2e.stdmou.s; sourceTree = "<group>"; };
 		9DF837AF1F22FB7500FFFEF2 /* mouseWrapper.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mouseWrapper.c; sourceTree = "<group>"; };
 		9DF837B01F22FB7500FFFEF2 /* mouseWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mouseWrapper.h; sourceTree = "<group>"; };
+		9DF837B21F23061700FFFEF2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		9DFD77C91F1F9C2500639A48 /* game.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = game.s; sourceTree = "<group>"; };
 		9DFD77CA1F1F9C2500639A48 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		9DFD77CC1F1F9C2500639A48 /* AppleCommander.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; name = AppleCommander.jar; path = make/AppleCommander.jar; sourceTree = "<group>"; };
@@ -42,6 +43,7 @@
 		9DFD77C21F1F9C2500639A48 = {
 			isa = PBXGroup;
 			children = (
+				9DF837B21F23061700FFFEF2 /* README.md */,
 				9DFD77C81F1F9C2500639A48 /* colourgo */,
 			);
 			sourceTree = "<group>";
