@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		9DF837AE1F22FB4300FFFEF2 /* a2e.stdmou.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = a2e.stdmou.s; sourceTree = "<group>"; };
+		9DF837AF1F22FB7500FFFEF2 /* mouseWrapper.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mouseWrapper.c; sourceTree = "<group>"; };
+		9DF837B01F22FB7500FFFEF2 /* mouseWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mouseWrapper.h; sourceTree = "<group>"; };
 		9DFD77C91F1F9C2500639A48 /* game.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = game.s; sourceTree = "<group>"; };
 		9DFD77CA1F1F9C2500639A48 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		9DFD77CC1F1F9C2500639A48 /* AppleCommander.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; name = AppleCommander.jar; path = make/AppleCommander.jar; sourceTree = "<group>"; };
@@ -26,6 +29,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		9DF837B11F22FB7B00FFFEF2 /* mouse */ = {
+			isa = PBXGroup;
+			children = (
+				9DF837AE1F22FB4300FFFEF2 /* a2e.stdmou.s */,
+				9DF837AF1F22FB7500FFFEF2 /* mouseWrapper.c */,
+				9DF837B01F22FB7500FFFEF2 /* mouseWrapper.h */,
+			);
+			name = mouse;
+			sourceTree = "<group>";
+		};
 		9DFD77C21F1F9C2500639A48 = {
 			isa = PBXGroup;
 			children = (
@@ -36,13 +49,14 @@
 		9DFD77C81F1F9C2500639A48 /* colourgo */ = {
 			isa = PBXGroup;
 			children = (
+				9DFD77D91F1FA47900639A48 /* main.c */,
 				9DFD77C91F1F9C2500639A48 /* game.s */,
 				9DFD77DB1F1FA4A400639A48 /* game.h */,
-				9DFD77D91F1FA47900639A48 /* main.c */,
 				9DFD77DC1F1FB69600639A48 /* vbl.s */,
 				9DFD77DD1F1FB69600639A48 /* vbl.h */,
 				9DFD77DE1F1FB69600639A48 /* machine.c */,
 				9DFD77DF1F1FB69600639A48 /* machine.h */,
+				9DF837B11F22FB7B00FFFEF2 /* mouse */,
 				9DFD77CA1F1F9C2500639A48 /* Makefile */,
 				9DFD77CB1F1F9C2500639A48 /* make */,
 			);
@@ -237,6 +251,7 @@
 				9DFD77D81F1F9C2500639A48 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

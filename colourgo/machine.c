@@ -12,6 +12,7 @@
 #include <stdint.h>
 
 #include "machine.h"
+#include "mouseWrapper.h"
 #include "vbl.h"
 
 
@@ -87,6 +88,7 @@ void initMachine(void)
     gVblWait = vblWaitNon2c;
     
     if (machineIs2c()) {
+        initMouse();
         gVblWait = vblWait2c;
     } else if (machineIs2GS()) {
         vblInit2gs();
@@ -99,5 +101,8 @@ void uninitMachine(void)
 {
     if (machineIs2GS()) {
         setGSSpeed(gOldSpeed);
+    }
+    if (machineIs2c()) {
+        shutdownMouse();
     }
 }

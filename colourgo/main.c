@@ -43,7 +43,7 @@ void splashScreen(void)
   "\n"                                          // 20
   "THE SOLID FLOOR IS THE END OF THE LEVEL."    // 21
   "\n"                                          // 22
-  "           PRESS ANY KEY TO BEGIN"           // 23
+  "          PRESS ANY KEY TO BEGIN"            // 23
            );
     cgetc();
 }
