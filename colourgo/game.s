@@ -53,6 +53,11 @@ GRID_HEIGHT=5
 GRID_MAX_SHIFT=7
 
 LEVEL_STRUCT_SIZE=5
+LEVEL_STRUCT_START=0
+LEVEL_STRUCT_WIDTH=1
+LEVEL_STRUCT_TOP=2
+LEVEL_STRUCT_BOTTOM=3
+LEVEL_STRUCT_COLOUR=4
 
 LINE0 = $2000
 LINE1 = LINE0 + 1024
@@ -254,13 +259,18 @@ LINE191 = LINE190 + 1024
 
 ; Set up hires screen
     jsr clearScreen
-    jsr setLevelAddr
+    jsr resetGame
 
 @nextframe:
     jsr _vblWait
 
     jsr drawCharacter
     jsr drawGrids
+
+;@debugLoop:
+;    ldx KBD
+;    bpl @debugLoop
+;    ldx KBDSTRB
 
     jsr updateGrid
     jsr updateCharacter
@@ -297,11 +307,7 @@ LINE191 = LINE190 + 1024
     lda #CHAR_STATE_FALLING
     sta characterState
 
-    jmp setLevelAddr
-.endproc
-
-
-.proc setLevelAddr
+@setLevelAddr:
     ldx level
     lda levelsLo,x
     sta LEVELADDR
@@ -312,7 +318,7 @@ LINE191 = LINE190 + 1024
 ;   If the high byte of the level address is 0, then there are no more levels
 ;   For now, just loop back to level 0.  TODO - Something better.
     sta level
-    jsr setLevelAddr
+    jmp @setLevelAddr
 
 @notAtTheEnd:
     rts
@@ -364,6 +370,7 @@ freq: .BYTE $00
 
 .proc gameOver
     jsr drawCharacter
+    jsr drawGrids
 
     lda #0
     ldx #36
@@ -542,7 +549,7 @@ lastButtonState: .BYTE $00
     adc #MAXXBYTE
     sta screenRight
 
-    ldy #$1
+    ldy #LEVEL_STRUCT_WIDTH
     lda (ZPADDR6),y
     beq @noneFound
 
@@ -550,7 +557,9 @@ lastButtonState: .BYTE $00
     lda gridLeft
     cmp screenRight
     bcs @noneFound
-    ldy #$1
+
+; Add the width of the grid to the current gridLeft
+    ldy #LEVEL_STRUCT_WIDTH
     clc
     adc (ZPADDR6),y
 ; If we got a carry, that means the width of the next grid plus
@@ -560,42 +569,38 @@ lastButtonState: .BYTE $00
     bcs @overflow
     cmp gridXPos
     bcc @nextGrid
-    sec
+
 @overflow:
     sbc gridXPos
-    tax
-    lda gridXShift
+    ldx gridXShift
     beq @skipRightAdjust
-    cmp #3
+    cpx #3
     bcs @skipRightAdjust
-    dex
-    dex
+    sec
+    sbc #2
+
 @skipRightAdjust:
-    cpx #MAXXBYTE
+    cmp #MAXXBYTE
     bcc @rightIsNotOffScreen
-    ldx #MAXXBYTE
+    lda #MAXXBYTE
 @rightIsNotOffScreen:
-    stx gridScreenRight
+    sta gridScreenRight
 
     lda gridLeft
     sec
     sbc gridXPos
+    beq @skipLeftAdjust
     bpl @leftIsOnScreen
     lda #$0
-    tax
     jmp @skipLeftAdjust
 
 @leftIsOnScreen:
-    tax
-    lda gridXShift
+    ldx gridXShift
     beq @skipLeftAdjust
-    cmp #4
-    bcs @skipLeftAdjust
-    dex
-    dex
+    sec
+    sbc #1
 
 @skipLeftAdjust:
-    txa
     cmp #CHAR_XPOS+1
     bcs @noneFound
 
@@ -612,11 +617,11 @@ lastButtonState: .BYTE $00
 @doNotIncHiByte:
     sta ZPADDR6
 
-    ldy #$1
+    ldy #LEVEL_STRUCT_WIDTH
     lda (ZPADDR6),y
     beq @noneFound
 
-    ldy #$0
+    ldy #LEVEL_STRUCT_START
     lda gridLeft
     clc
     adc (ZPADDR6),y
@@ -646,19 +651,19 @@ gridLeft:    .BYTE $00
 @loop:
     jsr nextGridAtCharacter
     bcs @floorGone
-    ldy #2
+    ldy #LEVEL_STRUCT_TOP
     lda (ZPADDR6),y
     cmp characterYBottom
     bne @loop
 
-    ldy #4
+    ldy #LEVEL_STRUCT_COLOUR
     lda (ZPADDR6),y
     cmp characterColour
     beq @checkForWin
     jmp gameOver
 
 @checkForWin:
-    ldy #LEVEL_STRUCT_SIZE+1
+    ldy #LEVEL_STRUCT_SIZE+LEVEL_STRUCT_WIDTH
     lda (ZPADDR6),y
     bne @return
     jmp levelWon
@@ -679,6 +684,8 @@ gridLeft:    .BYTE $00
 
 ; For jumping, we need to calculate the top first and check
 ; for collisions
+    lda #$ff
+    sta didHitHead
 
     lda characterY
     sec
@@ -690,11 +697,11 @@ gridLeft:    .BYTE $00
     jsr nextGridAtCharacter
     bcs @didNotHitHead
 
-    ldy #2
+    ldy #LEVEL_STRUCT_TOP
     lda (ZPADDR6),y
     sta gridTop
 
-    ldy #3
+    ldy #LEVEL_STRUCT_BOTTOM
     lda (ZPADDR6),y
     sta gridBottom
 
@@ -705,6 +712,9 @@ gridLeft:    .BYTE $00
 @wasBelowToStart:
     cmp characterY
     bcc @loop
+
+    ldy #0
+    sty didHitHead
     jmp @startFalling
 
 @hitCeiling:
@@ -740,11 +750,24 @@ gridLeft:    .BYTE $00
     clc
     adc #CHAR_HEIGHT
     sta characterYBottom
+
+    lda didHitHead
+    bne @return
+
+; Check that the colour matches
+    ldy #LEVEL_STRUCT_COLOUR
+    lda (ZPADDR6),y
+    cmp characterColour
+    beq @return
+    jmp gameOver
+
+@return:
     rts
 
 ; Locals
 gridTop:       .BYTE $00
 gridBottom:    .BYTE $00
+didHitHead:    .BYTE $ff
 
 .endproc
 
@@ -772,11 +795,11 @@ gridBottom:    .BYTE $00
     jsr nextGridAtCharacter
     bcs @didNotLand
 
-    ldy #3
+    ldy #LEVEL_STRUCT_BOTTOM
     lda (ZPADDR6),y
     sta gridBottom
 
-    ldy #2
+    ldy #LEVEL_STRUCT_TOP
     lda (ZPADDR6),y
 
     cmp characterOldYBottom
@@ -805,8 +828,8 @@ gridBottom:    .BYTE $00
 
 @dropToBottomOfGrid:
     lda gridBottom
-    sec
-    sbc #CHAR_HEIGHT
+    clc
+    adc #CHAR_HEIGHT
     sta characterYBottom
 
 @didNotLand:
@@ -822,6 +845,18 @@ gridBottom:    .BYTE $00
     sec
     sbc #CHAR_HEIGHT
     sta characterY
+
+    lda characterState
+    cmp #CHAR_STATE_NONE
+    bne @return
+
+    ldy #LEVEL_STRUCT_COLOUR
+    lda (ZPADDR6),y
+    cmp characterColour
+    beq @return
+    jmp gameOver
+
+@return:
     rts
 
 ; Locals
@@ -965,7 +1000,7 @@ yPos:    .BYTE $00
     inc gridXPos
 
 @loop:
-    ldy #$1
+    ldy #LEVEL_STRUCT_WIDTH
     lda gridXPos
     cmp (LEVELADDR),y
     bcc @return
@@ -973,7 +1008,7 @@ yPos:    .BYTE $00
 ; At this point, we know that this grid is not visible
 ; Check to see if the start of the next grid is left justified
 ; or off screen.
-    ldy #LEVEL_STRUCT_SIZE
+    ldy #LEVEL_STRUCT_SIZE+LEVEL_STRUCT_START
     cmp (LEVELADDR),y
     bcc @return
 
@@ -988,7 +1023,7 @@ yPos:    .BYTE $00
     inc LEVELADDR+1
 @doNotIncHiByte:
     sta LEVELADDR
-    ldy #$0
+    ldy #LEVEL_STRUCT_START
     lda gridXPos
     sec
     sbc (LEVELADDR),y
@@ -1017,7 +1052,7 @@ yPos:    .BYTE $00
     adc #MAXXBYTE
     sta screenRight
 
-    ldy #$1
+    ldy #LEVEL_STRUCT_WIDTH
     lda (ZPADDR6),y
     bne @gridLoop
     rts
@@ -1026,7 +1061,7 @@ yPos:    .BYTE $00
     lda gridLeft
     cmp screenRight
     bcs @return
-    ldy #$1
+    ldy #LEVEL_STRUCT_WIDTH
     clc
     adc (ZPADDR6),y
 ; If we got a carry, that means the width of the next grid plus
@@ -1100,11 +1135,11 @@ yPos:    .BYTE $00
 @doNotIncHiByte:
     sta ZPADDR6
 
-    ldy #$1
+    ldy #LEVEL_STRUCT_WIDTH
     lda (ZPADDR6),y
     beq @return
 
-    ldy #$0
+    ldy #LEVEL_STRUCT_START
     lda gridLeft
     clc
     adc (ZPADDR6),y
@@ -1126,7 +1161,7 @@ gridLeft:    .BYTE $00
 
 
 .proc drawGrid
-    ldy #$2
+    ldy #LEVEL_STRUCT_TOP
     lda (ZPADDR6),y
     tay
     lda loAddrs,y
@@ -1165,7 +1200,7 @@ gridLeft:    .BYTE $00
     sta ZPADDR5+1
 
     ldx gridXShift
-    ldy #$4
+    ldy #LEVEL_STRUCT_COLOUR
     lda (ZPADDR6),y
     tay
     lda colourEvenLookup,y
@@ -1177,7 +1212,7 @@ gridLeft:    .BYTE $00
     and oddGrid,x
     sta oddGridVal
 
-    ldy #LEVEL_STRUCT_SIZE+1
+    ldy #LEVEL_STRUCT_SIZE+LEVEL_STRUCT_WIDTH
     lda (ZPADDR6),y
     bne @notLastGrid
     lda evenVal
