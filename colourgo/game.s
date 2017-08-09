@@ -1060,7 +1060,9 @@ yPos:    .BYTE $00
 @gridLoop:
     lda gridLeft
     cmp screenRight
+    beq @continue
     bcs @return
+@continue:
     ldy #LEVEL_STRUCT_WIDTH
     clc
     adc (ZPADDR6),y
@@ -1368,22 +1370,22 @@ oddRightCap:  .BYTE $00
     ldx #0
     ldy #0
 
-@L1:
+@nextLine:
     lda loAddrs,x
     sta ZPADDR0
     lda page1HiAddrs,x
     sta ZPADDR0+1
 
     lda #$0
-@L2:
+@nextByte:
     sta (ZPADDR0),y
     iny
     cpy #MAXXBYTE
-    bne @L2
+    bne @nextByte
 
     inx
     cpx #MAXY
-    bne @L1
+    bne @nextLine
 
     lda TXTCLR
     lda MIXCLR
