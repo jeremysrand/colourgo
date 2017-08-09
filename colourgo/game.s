@@ -574,7 +574,7 @@ lastButtonState: .BYTE $00
     sbc gridXPos
     ldx gridXShift
     beq @skipRightAdjust
-    cpx #3
+    cpx #5
     bcs @skipRightAdjust
     sec
     sbc #2
