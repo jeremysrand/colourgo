@@ -9,8 +9,7 @@
 
 
     .export _vblWait, _vblWaitNon2c, _vblWait2c, _vblInit2gs
-    .export _gVblWait
-    .interruptor _vblIRQCallback
+    .export _gVblWait, _vblIRQCallback
 
 
     .include "apple2.inc"
