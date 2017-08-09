@@ -1114,9 +1114,21 @@ yPos:    .BYTE $00
     lda gridLeft
     sec
     sbc gridXPos
-    bpl @leftIsOnScreen
+    bmi @leftIsOffScreen
+    beq @doneLeftAdjust
+
+    ldx gridXShift
+    beq @doneLeftAdjust
+    cpx #$4
+    bcs @doneLeftAdjust
+    sec
+    sbc #$1
+    jmp @doneLeftAdjust
+
+@leftIsOffScreen:
     lda #$0
-@leftIsOnScreen:
+
+@doneLeftAdjust:
     sta gridScreenLeft
 
     jsr drawGrid
@@ -1215,6 +1227,7 @@ gridLeft:    .BYTE $00
     ldy #LEVEL_STRUCT_SIZE+LEVEL_STRUCT_WIDTH
     lda (ZPADDR6),y
     bne @notLastGrid
+
     lda evenVal
     sta evenGridVal
     lda oddVal
@@ -1229,15 +1242,14 @@ gridLeft:    .BYTE $00
     sta oddRightCap
 
     ldy gridScreenLeft
-    beq @L1
-    cpx #$0
-    beq @L1
-    jmp @L2
-@L1:
-    jmp @nextGridComponent
-; Draw the left cap
+    beq @nextGridComponent
 
-@L2:
+; Draw the left cap
+    dey
+    tya
+    and #$01
+    bne @leftCapOdd
+
     lda evenGridLeft,x
     and evenVal
     sta evenLeftCap
@@ -1245,6 +1257,15 @@ gridLeft:    .BYTE $00
     eor #$ff
     sta evenLeftMask
 
+    lda evenLeftCap
+    and evenGridVal
+    tax
+    lda evenLeftMask
+    and (ZPADDR0),y
+    ora evenLeftCap
+    jmp @drawLeftCapComponent
+
+@leftCapOdd:
     lda oddGridLeft,x
     and oddVal
     sta oddLeftCap
@@ -1252,57 +1273,16 @@ gridLeft:    .BYTE $00
     eor #$ff
     sta oddLeftMask
 
-    dey
-
-    tya
-    and #$01
-    bne @leftCapOdd1
-
-    lda evenLeftCap
-    and evenGridVal
-    tax
-    lda evenLeftMask
-    and (ZPADDR0),y
-    ora evenLeftCap
-    jmp @nextLeftCapComponent
-
-@leftCapOdd1:
     lda oddLeftCap
     and oddGridVal
     tax
     lda oddLeftMask
     and (ZPADDR0),y
     ora oddLeftCap
-    ldx oddGridVal
 
-@nextLeftCapComponent:
-    jsr drawGridComponent
-    dey
-    bmi @drawBodyComponents
-
-    tya
-    and #$01
-    bne @leftCapOdd2
-
-    lda evenLeftCap
-    and evenGridVal
-    tax
-    lda evenLeftMask
-    and (ZPADDR0),y
-    ora evenLeftCap
-    jsr drawGridComponent
-    jmp @drawBodyComponents
-
-@leftCapOdd2:
-    lda oddLeftCap
-    and oddGridVal
-    tax
-    lda oddLeftMask
-    and (ZPADDR0),y
-    ora oddLeftCap
+@drawLeftCapComponent:
     jsr drawGridComponent
 
-@drawBodyComponents:
     ldy gridScreenLeft
 @nextGridComponent:
     cpy gridScreenRight
