@@ -569,6 +569,7 @@ lastButtonState: .BYTE $00
     bcs @overflow
     cmp gridXPos
     bcc @nextGrid
+    beq @nextGrid
 
 @overflow:
     sbc gridXPos
