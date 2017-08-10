@@ -20,7 +20,7 @@ void splashScreen(void)
     printf(
 // 0000000000111111111122222222223333333333
 // 0123456789012345678901234567890123456789
-  "              COLOURGO V1.0\n"               // 00
+  "              COLOURGO V1.5\n"               // 00
   "              BY JEREMY RAND\n"              // 01
   "\n"                                          // 02
   "YOU MUST HAVE A COLOUR MONITOR TO PLAY\n"    // 03
