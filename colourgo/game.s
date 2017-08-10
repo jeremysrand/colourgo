@@ -1004,6 +1004,7 @@ yPos:    .BYTE $00
     lda gridXPos
     cmp (LEVELADDR),y
     bcc @return
+    beq @return
 
 ; At this point, we know that this grid is not visible
 ; Check to see if the start of the next grid is left justified
