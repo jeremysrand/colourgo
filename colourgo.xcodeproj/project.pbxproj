@@ -3,90 +3,149 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 50;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		9D55076520DA0B6800B71EFD /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 9D55076420DA0B6800B71EFD /* Makefile */; };
+		9D55076820DA0B6800B71EFD /* AppleCommander.jar in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D55076720DA0B6800B71EFD /* AppleCommander.jar */; };
+		9D55076A20DA0B6800B71EFD /* createDiskImage in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9D55076920DA0B6800B71EFD /* createDiskImage */; };
+		9D55076C20DA0B6900B71EFD /* DevApple.vii in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9D55076B20DA0B6900B71EFD /* DevApple.vii */; };
+		9D55076E20DA0B6900B71EFD /* dos33_template.dsk in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9D55076D20DA0B6900B71EFD /* dos33_template.dsk */; };
+		9D55077020DA0B6900B71EFD /* head.mk in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9D55076F20DA0B6900B71EFD /* head.mk */; };
+		9D55077220DA0B6900B71EFD /* prodos_template.dsk in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9D55077120DA0B6900B71EFD /* prodos_template.dsk */; };
+		9D55077420DA0B6900B71EFD /* tail.mk in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9D55077320DA0B6900B71EFD /* tail.mk */; };
+		9D55077620DA0B6900B71EFD /* V2Make.scpt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9D55077520DA0B6900B71EFD /* V2Make.scpt */; };
+		9D55077920DA0B6900B71EFD /* colourgo.xcscheme in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9D55077820DA0B6900B71EFD /* colourgo.xcscheme */; };
+		9D55078C20DA0BDC00B71EFD /* vbl.s in Sources */ = {isa = PBXBuildFile; fileRef = 9D55078520DA0BDB00B71EFD /* vbl.s */; };
+		9D55078D20DA0BDC00B71EFD /* game.s in Sources */ = {isa = PBXBuildFile; fileRef = 9D55078720DA0BDC00B71EFD /* game.s */; };
+		9D55078E20DA0BDC00B71EFD /* mouseWrapper.c in Sources */ = {isa = PBXBuildFile; fileRef = 9D55078920DA0BDC00B71EFD /* mouseWrapper.c */; };
+		9D55078F20DA0BDC00B71EFD /* machine.c in Sources */ = {isa = PBXBuildFile; fileRef = 9D55078A20DA0BDC00B71EFD /* machine.c */; };
+		9D55079020DA0BDC00B71EFD /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 9D55078B20DA0BDC00B71EFD /* main.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9D55075D20DA0B6800B71EFD /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				9D55076A20DA0B6800B71EFD /* createDiskImage in CopyFiles */,
+				9D55077920DA0B6900B71EFD /* colourgo.xcscheme in CopyFiles */,
+				9D55076C20DA0B6900B71EFD /* DevApple.vii in CopyFiles */,
+				9D55076E20DA0B6900B71EFD /* dos33_template.dsk in CopyFiles */,
+				9D55077420DA0B6900B71EFD /* tail.mk in CopyFiles */,
+				9D55077620DA0B6900B71EFD /* V2Make.scpt in CopyFiles */,
+				9D55077220DA0B6900B71EFD /* prodos_template.dsk in CopyFiles */,
+				9D55077020DA0B6900B71EFD /* head.mk in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		9DF837AE1F22FB4300FFFEF2 /* a2e.stdmou.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = a2e.stdmou.s; sourceTree = "<group>"; };
-		9DF837AF1F22FB7500FFFEF2 /* mouseWrapper.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mouseWrapper.c; sourceTree = "<group>"; };
-		9DF837B01F22FB7500FFFEF2 /* mouseWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mouseWrapper.h; sourceTree = "<group>"; };
-		9DF837B21F23061700FFFEF2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		9DFD77C91F1F9C2500639A48 /* game.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = game.s; sourceTree = "<group>"; };
-		9DFD77CA1F1F9C2500639A48 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
-		9DFD77CC1F1F9C2500639A48 /* AppleCommander.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; name = AppleCommander.jar; path = make/AppleCommander.jar; sourceTree = "<group>"; };
-		9DFD77CD1F1F9C2500639A48 /* createDiskImage */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = createDiskImage; path = make/createDiskImage; sourceTree = "<group>"; };
-		9DFD77CE1F1F9C2500639A48 /* DevApple.vii */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; name = DevApple.vii; path = make/DevApple.vii; sourceTree = "<group>"; };
-		9DFD77CF1F1F9C2500639A48 /* dos33_template.dsk */ = {isa = PBXFileReference; lastKnownFileType = file; name = dos33_template.dsk; path = make/dos33_template.dsk; sourceTree = "<group>"; };
-		9DFD77D01F1F9C2500639A48 /* head.mk */ = {isa = PBXFileReference; lastKnownFileType = text; name = head.mk; path = make/head.mk; sourceTree = "<group>"; };
-		9DFD77D11F1F9C2500639A48 /* prodos_template.dsk */ = {isa = PBXFileReference; lastKnownFileType = file; name = prodos_template.dsk; path = make/prodos_template.dsk; sourceTree = "<group>"; };
-		9DFD77D21F1F9C2500639A48 /* tail.mk */ = {isa = PBXFileReference; lastKnownFileType = text; name = tail.mk; path = make/tail.mk; sourceTree = "<group>"; };
-		9DFD77D31F1F9C2500639A48 /* V2Make.scpt */ = {isa = PBXFileReference; lastKnownFileType = file; name = V2Make.scpt; path = make/V2Make.scpt; sourceTree = "<group>"; };
-		9DFD77D91F1FA47900639A48 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		9DFD77DB1F1FA4A400639A48 /* game.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = game.h; sourceTree = "<group>"; };
-		9DFD77DC1F1FB69600639A48 /* vbl.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = vbl.s; sourceTree = "<group>"; };
-		9DFD77DD1F1FB69600639A48 /* vbl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vbl.h; sourceTree = "<group>"; };
-		9DFD77DE1F1FB69600639A48 /* machine.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = machine.c; sourceTree = "<group>"; };
-		9DFD77DF1F1FB69600639A48 /* machine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = machine.h; sourceTree = "<group>"; };
+		9D55075F20DA0B6800B71EFD /* doNotBuild */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = doNotBuild; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D55076420DA0B6800B71EFD /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		9D55076720DA0B6800B71EFD /* AppleCommander.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; name = AppleCommander.jar; path = make/AppleCommander.jar; sourceTree = "<group>"; };
+		9D55076920DA0B6800B71EFD /* createDiskImage */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = createDiskImage; path = make/createDiskImage; sourceTree = "<group>"; };
+		9D55076B20DA0B6900B71EFD /* DevApple.vii */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; name = DevApple.vii; path = make/DevApple.vii; sourceTree = "<group>"; };
+		9D55076D20DA0B6900B71EFD /* dos33_template.dsk */ = {isa = PBXFileReference; lastKnownFileType = file; name = dos33_template.dsk; path = make/dos33_template.dsk; sourceTree = "<group>"; };
+		9D55076F20DA0B6900B71EFD /* head.mk */ = {isa = PBXFileReference; lastKnownFileType = text; name = head.mk; path = make/head.mk; sourceTree = "<group>"; };
+		9D55077120DA0B6900B71EFD /* prodos_template.dsk */ = {isa = PBXFileReference; lastKnownFileType = file; name = prodos_template.dsk; path = make/prodos_template.dsk; sourceTree = "<group>"; };
+		9D55077320DA0B6900B71EFD /* tail.mk */ = {isa = PBXFileReference; lastKnownFileType = text; name = tail.mk; path = make/tail.mk; sourceTree = "<group>"; };
+		9D55077520DA0B6900B71EFD /* V2Make.scpt */ = {isa = PBXFileReference; lastKnownFileType = file; name = V2Make.scpt; path = make/V2Make.scpt; sourceTree = "<group>"; };
+		9D55077820DA0B6900B71EFD /* colourgo.xcscheme */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = colourgo.xcscheme; path = colourgo.xcodeproj/xcshareddata/xcschemes/colourgo.xcscheme; sourceTree = SOURCE_ROOT; };
+		9D55078220DA0B9300B71EFD /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		9D55078320DA0BDB00B71EFD /* machine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = machine.h; sourceTree = "<group>"; };
+		9D55078420DA0BDB00B71EFD /* mouseWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mouseWrapper.h; sourceTree = "<group>"; };
+		9D55078520DA0BDB00B71EFD /* vbl.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = vbl.s; sourceTree = "<group>"; };
+		9D55078620DA0BDB00B71EFD /* game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = game.h; sourceTree = "<group>"; };
+		9D55078720DA0BDC00B71EFD /* game.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = game.s; sourceTree = "<group>"; };
+		9D55078820DA0BDC00B71EFD /* vbl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vbl.h; sourceTree = "<group>"; };
+		9D55078920DA0BDC00B71EFD /* mouseWrapper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mouseWrapper.c; sourceTree = "<group>"; };
+		9D55078A20DA0BDC00B71EFD /* machine.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = machine.c; sourceTree = "<group>"; };
+		9D55078B20DA0BDC00B71EFD /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFrameworksBuildPhase section */
+		9D55075C20DA0B6800B71EFD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9D55076820DA0B6800B71EFD /* AppleCommander.jar in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
 /* Begin PBXGroup section */
-		9DF837B11F22FB7B00FFFEF2 /* mouse */ = {
+		9D55075520DA0B6800B71EFD = {
 			isa = PBXGroup;
 			children = (
-				9DF837AE1F22FB4300FFFEF2 /* a2e.stdmou.s */,
-				9DF837AF1F22FB7500FFFEF2 /* mouseWrapper.c */,
-				9DF837B01F22FB7500FFFEF2 /* mouseWrapper.h */,
-			);
-			name = mouse;
-			sourceTree = "<group>";
-		};
-		9DFD77C21F1F9C2500639A48 = {
-			isa = PBXGroup;
-			children = (
-				9DF837B21F23061700FFFEF2 /* README.md */,
-				9DFD77C81F1F9C2500639A48 /* colourgo */,
+				9D55078220DA0B9300B71EFD /* README.md */,
+				9D55076120DA0B6800B71EFD /* colourgo */,
+				9D55076020DA0B6800B71EFD /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		9DFD77C81F1F9C2500639A48 /* colourgo */ = {
+		9D55076020DA0B6800B71EFD /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9DFD77D91F1FA47900639A48 /* main.c */,
-				9DFD77C91F1F9C2500639A48 /* game.s */,
-				9DFD77DB1F1FA4A400639A48 /* game.h */,
-				9DFD77DC1F1FB69600639A48 /* vbl.s */,
-				9DFD77DD1F1FB69600639A48 /* vbl.h */,
-				9DFD77DE1F1FB69600639A48 /* machine.c */,
-				9DFD77DF1F1FB69600639A48 /* machine.h */,
-				9DF837B11F22FB7B00FFFEF2 /* mouse */,
-				9DFD77CA1F1F9C2500639A48 /* Makefile */,
-				9DFD77CB1F1F9C2500639A48 /* make */,
+				9D55075F20DA0B6800B71EFD /* doNotBuild */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9D55076120DA0B6800B71EFD /* colourgo */ = {
+			isa = PBXGroup;
+			children = (
+				9D55076420DA0B6800B71EFD /* Makefile */,
+				9D55078620DA0BDB00B71EFD /* game.h */,
+				9D55078720DA0BDC00B71EFD /* game.s */,
+				9D55078A20DA0BDC00B71EFD /* machine.c */,
+				9D55078320DA0BDB00B71EFD /* machine.h */,
+				9D55078B20DA0BDC00B71EFD /* main.c */,
+				9D55078920DA0BDC00B71EFD /* mouseWrapper.c */,
+				9D55078420DA0BDB00B71EFD /* mouseWrapper.h */,
+				9D55078820DA0BDC00B71EFD /* vbl.h */,
+				9D55078520DA0BDB00B71EFD /* vbl.s */,
+				9D55076620DA0B6800B71EFD /* make */,
+				9D55077720DA0B6900B71EFD /* Supporting Files */,
 			);
 			path = colourgo;
 			sourceTree = "<group>";
 		};
-		9DFD77CB1F1F9C2500639A48 /* make */ = {
+		9D55076620DA0B6800B71EFD /* make */ = {
 			isa = PBXGroup;
 			children = (
-				9DFD77CC1F1F9C2500639A48 /* AppleCommander.jar */,
-				9DFD77CD1F1F9C2500639A48 /* createDiskImage */,
-				9DFD77CE1F1F9C2500639A48 /* DevApple.vii */,
-				9DFD77CF1F1F9C2500639A48 /* dos33_template.dsk */,
-				9DFD77D01F1F9C2500639A48 /* head.mk */,
-				9DFD77D11F1F9C2500639A48 /* prodos_template.dsk */,
-				9DFD77D21F1F9C2500639A48 /* tail.mk */,
-				9DFD77D31F1F9C2500639A48 /* V2Make.scpt */,
+				9D55076720DA0B6800B71EFD /* AppleCommander.jar */,
+				9D55076920DA0B6800B71EFD /* createDiskImage */,
+				9D55076B20DA0B6900B71EFD /* DevApple.vii */,
+				9D55076D20DA0B6900B71EFD /* dos33_template.dsk */,
+				9D55076F20DA0B6900B71EFD /* head.mk */,
+				9D55077120DA0B6900B71EFD /* prodos_template.dsk */,
+				9D55077320DA0B6900B71EFD /* tail.mk */,
+				9D55077520DA0B6900B71EFD /* V2Make.scpt */,
 			);
 			name = make;
+			sourceTree = "<group>";
+		};
+		9D55077720DA0B6900B71EFD /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9D55077820DA0B6900B71EFD /* colourgo.xcscheme */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXLegacyTarget section */
-		9DFD77C71F1F9C2500639A48 /* colourgo */ = {
+		9D55075A20DA0B6800B71EFD /* colourgo */ = {
 			isa = PBXLegacyTarget;
 			buildArgumentsString = "-C colourgo $(ACTION)";
-			buildConfigurationList = 9DFD77D61F1F9C2500639A48 /* Build configuration list for PBXLegacyTarget "colourgo" */;
+			buildConfigurationList = 9D55077C20DA0B6900B71EFD /* Build configuration list for PBXLegacyTarget "colourgo" */;
 			buildPhases = (
 			);
 			buildToolPath = /usr/bin/make;
@@ -98,63 +157,113 @@
 		};
 /* End PBXLegacyTarget section */
 
+/* Begin PBXNativeTarget section */
+		9D55075E20DA0B6800B71EFD /* doNotBuild */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9D55077F20DA0B6900B71EFD /* Build configuration list for PBXNativeTarget "doNotBuild" */;
+			buildPhases = (
+				9D55075B20DA0B6800B71EFD /* Sources */,
+				9D55075C20DA0B6800B71EFD /* Frameworks */,
+				9D55075D20DA0B6800B71EFD /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = doNotBuild;
+			productName = doNotBuild;
+			productReference = 9D55075F20DA0B6800B71EFD /* doNotBuild */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
 /* Begin PBXProject section */
-		9DFD77C31F1F9C2500639A48 /* Project object */ = {
+		9D55075620DA0B6800B71EFD /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "Jeremy Rand";
 				TargetAttributes = {
-					9DFD77C71F1F9C2500639A48 = {
-						CreatedOnToolsVersion = 8.3.3;
-						ProvisioningStyle = Automatic;
+					9D55075A20DA0B6800B71EFD = {
+						CreatedOnToolsVersion = 9.4.1;
+					};
+					9D55075E20DA0B6800B71EFD = {
+						CreatedOnToolsVersion = 9.4.1;
 					};
 				};
 			};
-			buildConfigurationList = 9DFD77C61F1F9C2500639A48 /* Build configuration list for PBXProject "colourgo" */;
-			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			buildConfigurationList = 9D55075920DA0B6800B71EFD /* Build configuration list for PBXProject "colourgo" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 9DFD77C21F1F9C2500639A48;
+			mainGroup = 9D55075520DA0B6800B71EFD;
+			productRefGroup = 9D55076020DA0B6800B71EFD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9DFD77C71F1F9C2500639A48 /* colourgo */,
+				9D55075A20DA0B6800B71EFD /* colourgo */,
+				9D55075E20DA0B6800B71EFD /* doNotBuild */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXSourcesBuildPhase section */
+		9D55075B20DA0B6800B71EFD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9D55078C20DA0BDC00B71EFD /* vbl.s in Sources */,
+				9D55078E20DA0BDC00B71EFD /* mouseWrapper.c in Sources */,
+				9D55079020DA0BDC00B71EFD /* main.c in Sources */,
+				9D55078F20DA0BDC00B71EFD /* machine.c in Sources */,
+				9D55076520DA0B6800B71EFD /* Makefile in Sources */,
+				9D55078D20DA0BDC00B71EFD /* game.s in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
 /* Begin XCBuildConfiguration section */
-		9DFD77D41F1F9C2500639A48 /* Debug */ = {
+		9D55077A20DA0B6900B71EFD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -173,33 +282,43 @@
 			};
 			name = Debug;
 		};
-		9DFD77D51F1F9C2500639A48 /* Release */ = {
+		9D55077B20DA0B6900B71EFD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -211,11 +330,13 @@
 			};
 			name = Release;
 		};
-		9DFD77D71F1F9C2500639A48 /* Debug */ = {
+		9D55077D20DA0B6900B71EFD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
 				DEBUGGING_SYMBOLS = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = VD9FGCW36C;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				OTHER_CFLAGS = "";
@@ -224,38 +345,71 @@
 			};
 			name = Debug;
 		};
-		9DFD77D81F1F9C2500639A48 /* Release */ = {
+		9D55077E20DA0B6900B71EFD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = VD9FGCW36C;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
+		9D55078020DA0B6900B71EFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = VD9FGCW36C;
+				GCC_PREPROCESSOR_DEFINITIONS = "__fastcall__=\"\"";
+				HEADER_SEARCH_PATHS = /usr/local/lib/cc65/include;
+				PRODUCT_NAME = doNotBuild;
+			};
+			name = Debug;
+		};
+		9D55078120DA0B6900B71EFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = VD9FGCW36C;
+				GCC_PREPROCESSOR_DEFINITIONS = "__fastcall__=\"\"";
+				HEADER_SEARCH_PATHS = /usr/local/lib/cc65/include;
+				PRODUCT_NAME = doNotBuild;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9DFD77C61F1F9C2500639A48 /* Build configuration list for PBXProject "colourgo" */ = {
+		9D55075920DA0B6800B71EFD /* Build configuration list for PBXProject "colourgo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9DFD77D41F1F9C2500639A48 /* Debug */,
-				9DFD77D51F1F9C2500639A48 /* Release */,
+				9D55077A20DA0B6900B71EFD /* Debug */,
+				9D55077B20DA0B6900B71EFD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9DFD77D61F1F9C2500639A48 /* Build configuration list for PBXLegacyTarget "colourgo" */ = {
+		9D55077C20DA0B6900B71EFD /* Build configuration list for PBXLegacyTarget "colourgo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9DFD77D71F1F9C2500639A48 /* Debug */,
-				9DFD77D81F1F9C2500639A48 /* Release */,
+				9D55077D20DA0B6900B71EFD /* Debug */,
+				9D55077E20DA0B6900B71EFD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9D55077F20DA0B6900B71EFD /* Build configuration list for PBXNativeTarget "doNotBuild" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9D55078020DA0B6900B71EFD /* Debug */,
+				9D55078120DA0B6900B71EFD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 9DFD77C31F1F9C2500639A48 /* Project object */;
+	rootObject = 9D55075620DA0B6800B71EFD /* Project object */;
 }
